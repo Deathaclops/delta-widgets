@@ -1,0 +1,18 @@
+/* Add your custom extension styling here */
+
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+.time-label, .date-label {
+	color: #000000;
+	text-align: center;
+	display: block;
+	font-family: "Noto Sans Mono", monospace;
+}
+
+.time-label {
+	font-size: 20px;
+}
+
+.date-label {
+	font-size: 14px;
+}

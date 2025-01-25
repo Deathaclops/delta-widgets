@@ -1,0 +1,8 @@
+{
+  "name": "Delta Widgets",
+  "description": "Add widgets to the dock",
+  "uuid": "delta-widgets@victrix.io",
+  "shell-version": [
+    "47"
+  ]
+}
