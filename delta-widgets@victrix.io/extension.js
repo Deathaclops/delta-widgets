@@ -29,53 +29,59 @@ function decycle(obj, stack = []) {
                 .map(([k, v]) => [k, decycle(v, s)]));
 }
 
+function add_widgets() {
+	let dock = locate_dock();
+			
+	// Calculate width and height
+	let allocation = dock.get_allocation_box();
+	let width = allocation.get_width();
+	let height = allocation.get_height();
+	let icon_size = dock.dash.iconSize;
+	let widget_height = width;
+	let padding = 10;
+	let icon_size_padded = icon_size - padding * 2;
+	let icon_placement_1 = height - width * 2 + padding;
+	let icon_placement_2 = height - width * 3 + padding;
+
+	label_1 = new St.Label({
+		style_class: 'time-label',
+		reactive: true,
+		can_focus: true,
+		track_hover: true,
+		text: "...",
+	});
+
+	label_1.set_size(width, widget_height);
+	label_1.set_position(0, icon_placement_1);
+	dock.add_child(label_1);
+	
+	label_2 = new St.Label({
+		style_class: 'date-label',
+		reactive: true,
+		can_focus: true,
+		track_hover: true,
+		text: "...",
+	});
+
+	label_2.set_size(width, widget_height);
+	label_2.set_position(0, icon_placement_2);
+	dock.add_child(label_2);
+
+	label_1.connect('destroy', () => {
+		label_1 = null;
+	});
+	
+	label_2.connect('destroy', () => {
+		label_2 = null;
+	});
+
+}
+
 export default class DeltaWidgetsExtension extends Extension {
 	enable() {
 
 		globalThis.label_1 = null;
 		globalThis.label_2 = null;
-
-		GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 1, () => {
-
-			let dock = locate_dock();
-			
-			// Calculate width and height
-			let allocation = dock.get_allocation_box();
-			let width = allocation.get_width();
-			let height = allocation.get_height();
-			let icon_size = dock.dash.iconSize;
-			let widget_height = width;
-			let padding = 10;
-			let icon_size_padded = icon_size - padding * 2;
-			let icon_placement_1 = height - width * 2 + padding;
-			let icon_placement_2 = height - width * 3 + padding;
-
-			label_1 = new St.Label({
-				style_class: 'time-label',
-				reactive: true,
-				can_focus: true,
-				track_hover: true,
-				text: "...",
-			});
-
-			label_1.set_size(width, widget_height);
-			label_1.set_position(0, icon_placement_1);
-			dock.add_child(label_1);
-			
-			label_2 = new St.Label({
-				style_class: 'date-label',
-				reactive: true,
-				can_focus: true,
-				track_hover: true,
-				text: "...",
-			});
-
-			label_2.set_size(width, widget_height);
-			label_2.set_position(0, icon_placement_2);
-			dock.add_child(label_2);
-			return false;
-
-		});
 
 		GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 1, () => {
 			if (label_1 !== null && label_2 !== null) {
@@ -96,7 +102,8 @@ export default class DeltaWidgetsExtension extends Extension {
 				label_1.set_text(`${hours}:${minutes}\n${seconds}:${ampm}\n`);
 				label_2.set_text(`${month} / ${day}\n${year}\n${day_of_week}`);
 				return true;
-			}
+			} else { add_widgets(); }
+			return true;
 		});
 
 
