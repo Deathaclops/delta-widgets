@@ -1,2 +1,2 @@
 #!/bin/bash
-cp -r delta-widgets@victrix.io ~/.local/share/gnome-shell/extensions/
+cp -r gdwidgets@victrix.io ~/.local/share/gnome-shell/extensions/
